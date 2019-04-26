@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<RelativeLayout
+		android:id="@+id/topLayout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+		<BarcodeInspection.Droid.CameraSourcePreview
+			android:id="@+id/preview"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+		</BarcodeInspection.Droid.CameraSourcePreview>
+		<TextView
+			android:id="@+id/btnFlash2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentRight="true"
+			android:background="@android:color/transparent"
+			android:text="🔦"
+			android:textSize="30sp"
+			android:paddingStart="7dp"
+			android:paddingEnd="7dp"
+			android:paddingTop="7dp"
+			android:paddingBottom="7dp"/>
+
+		<ImageButton
+			android:id="@+id/btnExit"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentLeft="true"
+			android:background="@android:color/transparent"
+			android:src="@drawable/close_button"
+			android:paddingStart="7dp"
+			android:paddingEnd="7dp"
+			android:paddingTop="7dp"
+			android:paddingBottom="7dp"/>
+		<BarcodeInspection.Droid.GraphicOverlay
+			android:id="@+id/barcodeOverlay"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+	</RelativeLayout>
+</LinearLayout>

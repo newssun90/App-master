@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:BarcodeInspection.Behaviors"
+             xmlns:dxGrid="clr-namespace:DevExpress.Mobile.DataGrid;assembly=DevExpress.Mobile.Grid.v18.2"
+             x:Class="BarcodeInspection.Views.Outbound.LOBSM030View"
+			 xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:vm="clr-namespace:BarcodeInspection.ViewModels.Outbound"
+			 ios:Page.UseSafeArea="True"
+             Title="출고검수">
+    
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                    iOS="0, 20, 0, 0"
+                    Android="0"/>
+    </ContentPage.Padding>
+
+    <ContentPage.BindingContext>
+        <vm:LOBSM030ViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <Grid RowSpacing="0" ColumnSpacing="0">
+            <Grid.RowDefinitions>
+                <!-- 납품요청일 -->
+                <RowDefinition Height="50"></RowDefinition>
+                <!-- 납품센터 -->
+                <RowDefinition Height="50"></RowDefinition>
+                <!-- 배송군 -->
+                <RowDefinition Height="50"></RowDefinition>
+                <!-- 그리드 -->
+                <RowDefinition Height="*"></RowDefinition>
+                <!-- 완료여부-->
+                <RowDefinition Height="50"></RowDefinition>
+                <!-- 버튼영역 -->
+                <RowDefinition Height="50"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Text="납품요청일" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+            <DatePicker x:Name="DatePickerRqshpd"
+                            Date="{Binding Rqshpd}"
+                            Grid.Row="0" 
+                            Grid.Column="1"
+                            Grid.ColumnSpan="3"
+                            VerticalOptions="CenterAndExpand"
+                            Format="yyyy-MM-dd">
+                <DatePicker.Behaviors>
+                    <behaviors:EventToCommandBehavior
+							            EventName="DateSelected"
+							            Command="{Binding DateSelectedCommand}"/>
+                </DatePicker.Behaviors>
+            </DatePicker>
+
+            <Label Grid.Row="1" Grid.Column="0" Text="납품센터" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+            <Entry Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding ruteky}" IsEnabled="False" HorizontalTextAlignment="Start" VerticalOptions="Center" />
+
+            <Label Grid.Row="2" Grid.Column="0" Text="배송군" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+            <Entry Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding dlvynm}" IsEnabled="False" HorizontalTextAlignment="Start" VerticalOptions="Center" />
+
+            <dxGrid:GridControl x:Name="grid"
+                                Grid.Row="3" 
+                                Grid.ColumnSpan="4"
+                                ItemsSource="{Binding SearchResult}" 
+						        SortMode="Single" 
+                                RowHeight="50"
+                                ColumnsAutoWidth="False" 
+                                ColumnHeadersHeight="40"
+                                AllowEditRows="True"
+                                AllowDeleteRows="False"
+                                AllowGroup="False"
+                                AllowGroupCollapse="False"
+                                AllowResizeColumns="True"
+                                AllowSort="True"
+                                IsRowCellMenuEnabled ="False"
+                                AllowHorizontalScrollingVirtualization="False"
+                                AutoGenerateColumnsMode="None"
+                                IsColumnChooserEnabled="False"
+                                IsColumnMenuEnabled="False"
+                                IsPullToRefreshEnabled="True"
+                                SelectedDataObject="{Binding SelectedLOBSM030Model,Mode=TwoWay}"
+                                PullToRefreshCommand="{Binding PullToRefreshCommand}">
+
+                <dxGrid:GridControl.Columns>
+                    <dxGrid:TextColumn Caption="매출처" FieldName="Dlvycd" Width="90" ContentAlignment="Center" IsReadOnly="True"/>
+                    <dxGrid:TextColumn Caption="매출처명" FieldName="Dlvynm" Width="200" ContentAlignment="Center" IsReadOnly="True"/>
+                    <dxGrid:NumberColumn Caption="라벨개수" FieldName="LblCount" Width="120" ContentAlignment="Center" IsReadOnly="True" />
+                </dxGrid:GridControl.Columns>
+                
+                <dxGrid:GridControl.Behaviors>
+                    <behaviors:EventToCommandBehavior
+							EventName="RowDoubleTap"
+							Command="{Binding GridRowDoubleTapCommand}"
+                            CommandParameter="{Binding DevExpress.Mobile.DataGrid.RowDoubleTapEventArgs}"/>
+                </dxGrid:GridControl.Behaviors>
+                
+            </dxGrid:GridControl>
+
+            <Switch Grid.Row="4"
+                    Grid.Column="0"
+                    x:Name="switchStatus"
+                    IsToggled ="{Binding IsTranToggle}" 
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center">
+                <Switch.Behaviors>
+                    <behaviors:EventToCommandBehavior
+                        EventName="Toggled"
+                        Command="{Binding SwitchToggledCommand}"
+                        CommandParameter="{Binding ToggledEventArgs}"/>
+                </Switch.Behaviors>
+            </Switch>
+
+            <Label Grid.Row="4" Grid.Column="1" Text="{Binding TranName}" FontSize="20" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+
+            <Button x:Name="btnClear"
+                    Text="초기화"
+                    IsEnabled="{Binding IsEnabled}"
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Command="{Binding ClearCommand}" />
+
+            <Button x:Name="btnSearchAllDetail"
+                    Text="전체검수"
+                    Grid.Row="5"
+                    Grid.Column="3"
+                    Command="{Binding SearchAllDetailCommand}" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

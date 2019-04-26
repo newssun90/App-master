@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BarcodeInspection.Views.Common.BarcodeTypesView"
+             xmlns:vm="clr-namespace:BarcodeInspection.ViewModels.Common"
+             xmlns:behaviors="clr-namespace:BarcodeInspection.Behaviors"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="True">
+    
+    <ContentPage.BindingContext>
+        <vm:BarcodeTypesViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <ListView ItemsSource="{Binding SearchResult}" 
+                  RowHeight="50"
+                  BackgroundColor="White"
+                  SeparatorColor="#1ab78d"
+                  SeparatorVisibility="Default">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid RowSpacing="0" ColumnSpacing="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="100" />
+                            </Grid.ColumnDefinitions>
+
+                            <ContentView Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center" Padding="20, 5, 5, 5">
+                                <Label Text = "{Binding BarcodeType}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                            </ContentView>
+                            <Switch Grid.Column="1" IsToggled="{Binding IsSupport}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

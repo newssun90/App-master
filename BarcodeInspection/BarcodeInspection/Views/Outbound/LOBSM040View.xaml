@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:BarcodeInspection.Behaviors"
+             x:Class="BarcodeInspection.Views.Outbound.LOBSM040View"
+			 xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:vm="clr-namespace:BarcodeInspection.ViewModels.Outbound"
+             xmlns:dxGrid="clr-namespace:DevExpress.Mobile.DataGrid;assembly=DevExpress.Mobile.Grid.v18.2"
+			 ios:Page.UseSafeArea="True"
+             Title="출고검수 상세">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                    iOS="0, 20, 0, 0"
+                    Android="0"/>
+    </ContentPage.Padding>
+    
+    <ContentPage.BindingContext>
+        <vm:LOBSM040ViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <Grid RowSpacing="0" ColumnSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Text="매출처" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+            <Entry Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding ruteky}" IsEnabled="False" HorizontalTextAlignment="Start" VerticalOptions="Center" />
+
+            <Label Grid.Row="1" Grid.Column="0" Text="출고라벨" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+            <Image x:Name="imgScanNew" Grid.Row="1" Grid.Column="1" IsEnabled="{Binding IsEnabled}" IsVisible="{Binding IsEnabled}"
+                   Source="Images/barcodeRect36x36.png" Aspect="AspectFit">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BarcodeScanCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
+
+            <dxGrid:GridControl x:Name="grid"
+                                Grid.Row="2" 
+                                Grid.ColumnSpan="4"
+                                ItemsSource="{Binding SearchResult}" 
+						        SortMode="Single" 
+                                RowHeight="50"
+                                ColumnsAutoWidth="False" 
+                                ColumnHeadersHeight="40"
+                                AllowEditRows="False"
+                                AllowDeleteRows="False"
+                                AllowGroup="False"
+                                AllowGroupCollapse="False"
+                                AllowResizeColumns="True"
+                                AllowSort="True"
+                                IsRowCellMenuEnabled ="False"
+                                AllowHorizontalScrollingVirtualization="False"
+                                AutoGenerateColumnsMode="None"
+                                IsColumnChooserEnabled="False"
+                                IsColumnMenuEnabled="False"
+                                IsPullToRefreshEnabled="True"
+                                PullToRefreshCommand="{Binding PullToRefreshCommand}">
+                
+                <dxGrid:GridControl.Columns>
+                    <dxGrid:TextColumn Caption="출고라벨" FieldName="Lbbrcd" Width="120" ContentAlignment="Center" IsReadOnly="True"/>
+                    <dxGrid:TextColumn Caption="상품명" FieldName="Prodnm" Width="240" ContentAlignment="Center" IsReadOnly="True"/>
+                    <dxGrid:NumberColumn Caption="수량" FieldName="Ordqty" Width="50" ContentAlignment="Center" IsReadOnly="True" />
+                </dxGrid:GridControl.Columns>
+                
+            </dxGrid:GridControl>
+
+            <Switch Grid.Row="3"
+                    Grid.Column="0"
+                    x:Name="SwitchTran"
+                    IsToggled ="{Binding IsTranToggle}" 
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center">
+                <Switch.Behaviors>
+                    <behaviors:EventToCommandBehavior
+                        EventName="Toggled"
+                        Command="{Binding SwitchToggledCommand}"
+                        CommandParameter="{Binding ToggledEventArgs}"/>
+                </Switch.Behaviors>
+            </Switch>
+
+            <Label Grid.Row="3" Grid.Column="1" Text="{Binding TranName}" FontSize="20" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+            <Label Grid.Row="3" Grid.Column="2" Text="총수" FontSize="15" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+            <Entry Grid.Row="3" Grid.Column="3" Text="{Binding RowTotal}" IsEnabled="False" HorizontalTextAlignment="End" VerticalOptions="Center" BackgroundColor="Yellow"/>
+
+            <Button x:Name="btnClear"
+                    Text="초기화"
+                    IsEnabled="{Binding IsEnabled}"
+                    Grid.Row="4"
+                    Grid.Column="0"/>
+
+            <Button x:Name="btnSave"
+                    Text="저장"
+                    IsEnabled="{Binding IsEnabled}"
+                    Grid.Row="4"
+                    Grid.Column="3"
+                    Command="{Binding SaveLOBSM040Command}" />
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
