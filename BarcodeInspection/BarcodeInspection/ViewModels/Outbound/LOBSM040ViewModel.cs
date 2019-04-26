@@ -226,7 +226,6 @@ namespace BarcodeInspection.ViewModels.Outbound
         {
             foreach (var scanItem in scanResult) //카메라 화면에서 받아 온 것
             {
-                Debug.WriteLine("CAMERA BARCODE No.????????????????????!!!!!!!!!!!!" + scanItem);
                 foreach (var item in SearchResult) //화면에 있는 데이터
                 {
                     if (item.Lbbrcd == scanItem)
